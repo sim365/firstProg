@@ -37,6 +37,7 @@ namespace Sim
 			{
 				x[i] = x[i] + f[i] * dt;
 			}
+
 		}
 
 		//--------------------------------------------------------------------
@@ -48,6 +49,56 @@ namespace Sim
 			ff[1] = -g/len * Math.Sin(st[0]);
 		}
 
+		//--------------------------------------------------------------------
+		// rk4: function to integrate ODEs via RK4 Method
+		//--------------------------------------------------------------------
+		public void rk4(double dt)
+		{
+			// arrays
+			double [] xi = new double[n];
+			double [,] k = new double[4,2] {{0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}, {0.0, 0.0}};
+
+			int i;
+
+			// calculating kA
+			rhsFunc(x, f);
+			for(i = 0; i < n; ++i)
+			{
+				k[0, i] = f[i];
+				xi[i] = x[i] + k[0, i] * 0.5 * dt;
+			}
+
+			// calculating kB
+			rhsFunc(xi, f);
+			for(i = 0; i < n; ++i)
+			{
+				k[1, i] = f[i];
+				xi[i] = x[i] + k[1, i] * 0.5 * dt;
+			}
+
+			// calculating kC
+			rhsFunc(xi, f);
+			for(i = 0; i < n; ++i)
+			{
+				k[2, i] = f[i];
+				xi[i] = x[i] + k[2, i] * 0.5 * dt;
+			}
+
+			// calculating kD
+			rhsFunc(xi, f);
+			for(i = 0; i < n; ++i)
+			{
+				k[3, i] = f[i];
+				xi[i] = x[i] + k[3, i] * 0.5 * dt;
+			}
+
+			// rk4 calculation
+			for(i = 0; i < n; ++i)
+			{
+				x[i] = x[i] + (k[0, i] + 2.0 * k[1, i] + 2.0 * k[2, i] + 2.0 * k[3, i] )* dt/6.0;
+			}
+			
+		}
 
 		//--------------------------------------------------------------------
 		// Getters and setters
