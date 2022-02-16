@@ -84,18 +84,18 @@ namespace Sim
 				xi[i] = x[i] + k[2, i] * 0.5 * dt;
 			}
 
-			// calculating kD *****
+			// calculating kD
 			rhsFunc(xi, f);
 			for(i = 0; i < n; ++i)
 			{
 				k[3, i] = f[i];
-				xi[i] = x[i] + k[3, i] * 0.5 * dt;
+				//xi[i] = x[i] + k[3, i] * 0.5 * dt;
 			}
 
 			// rk4 calculation
 			for(i = 0; i < n; ++i)
 			{
-				x[i] = x[i] + (k[0, i] + 2.0 * k[1, i] + 2.0 * k[2, i] + 2.0 * k[3, i] )* dt/6.0;
+				x[i] = x[i] + (k[0, i] + 2 * k[1, i] + 2 * k[2, i] + k[3, i] )* dt/6;
 			}
 			
 		}
